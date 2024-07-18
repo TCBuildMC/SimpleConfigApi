@@ -1,7 +1,7 @@
-package xyz.tcbuildmc.common.config.test;
+package xyz.tcbuildmc.common.config.v0.test;
 
 import org.junit.jupiter.api.Test;
-import xyz.tcbuildmc.common.config.v0.api.SimpleConfig;
+import xyz.tcbuildmc.common.config.v0.api.SimpleConfigApi;
 import xyz.tcbuildmc.common.config.v0.api.parser.DefaultParsers;
 
 import java.util.Arrays;
@@ -21,7 +21,7 @@ public class WriteTest {
                 Arrays.asList("creeper", "steve", "minecraft", "jvav"),
                 properties);
 
-        String json = SimpleConfig.getInstance().write(TestConfig.class, content, DefaultParsers.gson());
+        String json = SimpleConfigApi.getInstance().write(TestConfig.class, content, DefaultParsers.gson());
         System.out.println(json);
     }
 }

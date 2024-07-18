@@ -2,16 +2,16 @@ package xyz.tcbuildmc.common.config.v0.impl;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
-import xyz.tcbuildmc.common.config.v0.api.SimpleConfig;
+import xyz.tcbuildmc.common.config.v0.api.SimpleConfigApi;
 import xyz.tcbuildmc.common.config.v0.api.parser.Parser;
 
 @ApiStatus.Internal
-public final class SimpleConfigImpl implements SimpleConfig {
+public final class SimpleConfigApiImpl implements SimpleConfigApi {
     @Nullable
-    public static SimpleConfig INSTANCE;
+    public static SimpleConfigApi INSTANCE;
 
-    public SimpleConfigImpl() {
-        SimpleConfigImpl.INSTANCE = this;
+    public SimpleConfigApiImpl() {
+        SimpleConfigApiImpl.INSTANCE = this;
     }
 
     @Override

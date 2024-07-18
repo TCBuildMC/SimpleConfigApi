@@ -1,4 +1,4 @@
-package xyz.tcbuildmc.common.config.test;
+package xyz.tcbuildmc.common.config.v0.test;
 
 import lombok.*;
 

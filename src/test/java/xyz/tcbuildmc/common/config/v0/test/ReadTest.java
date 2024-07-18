@@ -1,7 +1,7 @@
-package xyz.tcbuildmc.common.config.test;
+package xyz.tcbuildmc.common.config.v0.test;
 
 import org.junit.jupiter.api.Test;
-import xyz.tcbuildmc.common.config.v0.api.SimpleConfig;
+import xyz.tcbuildmc.common.config.v0.api.SimpleConfigApi;
 import xyz.tcbuildmc.common.config.v0.api.parser.DefaultParsers;
 
 public class ReadTest {
@@ -9,7 +9,7 @@ public class ReadTest {
     public void gsonRead0() {
         String json = "{\"lang\": \"en_us\", \"time\": 114514}";
 
-        TestConfig instance = SimpleConfig.getInstance().read(TestConfig.class, json, DefaultParsers.gson());
+        TestConfig instance = SimpleConfigApi.getInstance().read(TestConfig.class, json, DefaultParsers.gson());
         System.out.println(instance);
     }
 }

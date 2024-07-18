@@ -1,8 +1,7 @@
 package xyz.tcbuildmc.common.config.v0.impl.parser;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
+import blue.endless.jankson.Jankson;
+import blue.endless.jankson.api.SyntaxError;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -12,18 +11,17 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.function.Function;
 
 @ApiStatus.Internal
-public final class GsonParser implements Parser {
-    private final Gson gson;
+public final class JanksonParser implements Parser {
+    private final Jankson jankson;
 
     @Contract(pure = true)
-    public GsonParser(Gson gson) {
-        this.gson = gson;
+    public JanksonParser(Jankson jankson) {
+        this.jankson = jankson;
     }
 
-    public GsonParser() {
-        this(new GsonBuilder()
-                .setPrettyPrinting()
-                .create());
+    public JanksonParser() {
+        this.jankson = new Jankson.Builder()
+                .build();
     }
 
     @Contract(pure = true)
@@ -32,14 +30,14 @@ public final class GsonParser implements Parser {
     public <T> Function<String, T> read(Class<T> clazz) {
         return content -> {
             try {
-                T instance = this.gson.fromJson(content, clazz);
+                T instance = this.jankson.fromJson(content, clazz);
 
                 if (instance == null) {
                     return clazz.getDeclaredConstructor().newInstance();
                 }
 
                 return instance;
-            } catch (JsonSyntaxException |
+            } catch (SyntaxError |
                      InvocationTargetException |
                      InstantiationException |
                      IllegalAccessException |
@@ -54,6 +52,6 @@ public final class GsonParser implements Parser {
     @NotNull
     @Override
     public <T> Function<T, String> write(Class<T> clazz) {
-        return this.gson::toJson;
+        return instance -> this.jankson.toJson(instance).toJson(true, true);
     }
 }

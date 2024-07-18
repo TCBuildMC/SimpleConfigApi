@@ -1,0 +1,14 @@
+{
+	// Language of the app.
+	"lang": "zh_cn",
+	"time": 18,
+	// Is commands allowed?
+	"enable": false,
+	"depends": [
+		"creeper",
+		"steve",
+		"minecraft",
+		"jvav"
+	],
+	"properties": { }
+}

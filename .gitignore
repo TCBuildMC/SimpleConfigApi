@@ -29,6 +29,5 @@ bin/
 *.DS_Store
 
 # fabric
-
-run/
+run/config-copied.json5
 *.log

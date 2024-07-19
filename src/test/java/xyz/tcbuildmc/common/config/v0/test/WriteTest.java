@@ -40,4 +40,19 @@ public class WriteTest {
 
         SimpleConfigApi.getInstance().write(TestConfig.class, content, new File("run", "config.json5"), DefaultParsers.jankson());
     }
+
+    @Test
+    public void toml4jWrite() {
+        Map<String, Object> properties = new LinkedHashMap<>();
+
+        properties.put("message", "hello world!");
+
+        TestConfig content = new TestConfig("zh_cn",
+                18,
+                false,
+                Arrays.asList("creeper", "steve", "minecraft", "jvav"),
+                properties);
+
+        System.out.println(SimpleConfigApi.getInstance().write(TestConfig.class, content, DefaultParsers.toml4j()));
+    }
 }

@@ -1,4 +1,4 @@
-package xyz.tcbuildmc.common.config.v0.impl.util;
+package xyz.tcbuildmc.common.config.v0.impl.manager;
 
 import lombok.Getter;
 import org.jetbrains.annotations.ApiStatus;
@@ -19,7 +19,7 @@ public class URLConfigManager<T> extends AbstractConfigManager<T> {
 
     @Override
     public void load() {
-        setContent(SimpleConfigApi.getInstance().read(getClazz(), this.url, getParser()));
+        super.content = SimpleConfigApi.getInstance().read(getClazz(), this.url, getParser());
     }
 
     @Override

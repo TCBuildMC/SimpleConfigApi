@@ -10,5 +10,7 @@
 		"minecraft",
 		"jvav"
 	],
-	"properties": { }
+	"properties": {
+		"message": "hello world!"
+	}
 }

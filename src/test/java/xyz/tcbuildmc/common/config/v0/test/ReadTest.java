@@ -9,9 +9,9 @@ import java.io.File;
 public class ReadTest {
     @Test
     public void gsonRead() {
-        String json = "{\"lang\": \"en_us\", \"time\": 114514}";
+        File file = new File("run", "config.json");
 
-        TestConfig instance = SimpleConfigApi.getInstance().read(TestConfig.class, json, DefaultParsers.gson());
+        TestConfig instance = SimpleConfigApi.getInstance().read(TestConfig.class, file, DefaultParsers.gson());
         System.out.println(instance);
     }
 
@@ -20,6 +20,14 @@ public class ReadTest {
         File file = new File("run", "config.json5");
 
         TestConfig instance = SimpleConfigApi.getInstance().read(TestConfig.class, file, DefaultParsers.jankson());
+        System.out.println(instance);
+    }
+
+    @Test
+    public void toml4jRead() {
+        File file = new File("run", "config.toml");
+
+        TestConfig instance = SimpleConfigApi.getInstance().read(TestConfig.class, file, DefaultParsers.toml4j());
         System.out.println(instance);
     }
 }

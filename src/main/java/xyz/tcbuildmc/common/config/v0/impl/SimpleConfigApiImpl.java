@@ -16,13 +16,13 @@ public final class SimpleConfigApiImpl implements SimpleConfigApi {
 
     @Override
     public <T> T read(Class<T> clazz, String content, Parser parser) {
-        return parser.read(clazz)
+        return parser.serialize(clazz)
                 .apply(content);
     }
 
     @Override
     public <T> String write(Class<T> clazz, T content, Parser parser) {
-        return parser.write(clazz)
+        return parser.deserialize(clazz)
                 .apply(content);
     }
 }

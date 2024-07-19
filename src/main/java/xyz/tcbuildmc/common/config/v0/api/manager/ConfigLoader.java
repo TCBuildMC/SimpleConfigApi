@@ -1,12 +1,12 @@
-package xyz.tcbuildmc.common.config.v0.api.util;
+package xyz.tcbuildmc.common.config.v0.api.manager;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import xyz.tcbuildmc.common.config.v0.api.parser.DefaultParsers;
 import xyz.tcbuildmc.common.config.v0.api.parser.Parser;
-import xyz.tcbuildmc.common.config.v0.impl.util.FileConfigManager;
-import xyz.tcbuildmc.common.config.v0.impl.util.URLConfigManager;
+import xyz.tcbuildmc.common.config.v0.impl.manager.FileConfigManager;
+import xyz.tcbuildmc.common.config.v0.impl.manager.URLConfigManager;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -22,9 +22,9 @@ import java.nio.file.Path;
  * @since 1.0.1
  * @author Block_Mrlimr267
  */
-public interface ConfigManager {
+public interface ConfigLoader {
     /**
-     * Get an implementation of {@link ConfigManager}.
+     * Get an implementation of {@link ConfigLoader}.
      * <p>
      * Use {@link File} to load/ save.
      *
@@ -32,7 +32,7 @@ public interface ConfigManager {
      * @param parser the config parser. Also see {@link Parser} and {@link DefaultParsers}
      * @param file the config {@link File}
      * @param <T> the type of your config class
-     * @return an implementation of {@link ConfigManager}
+     * @return an implementation of {@link ConfigLoader}
      */
     @Contract("_, _, _ -> new")
     @NotNull
@@ -41,13 +41,13 @@ public interface ConfigManager {
     }
 
     /**
-     * A simple overload method of {@link ConfigManager#ofFile(Class, Parser, File)} (By {@link Path#toFile()}).
+     * A simple overload method of {@link ConfigLoader#ofFile(Class, Parser, File)} (By {@link Path#toFile()}).
      *
      * @param clazz the class type of your config class
      * @param parser the config parser. Also see {@link Parser} and {@link DefaultParsers}
      * @param path the {@link Path} of the config {@link File}
      * @param <T> the type of your config class
-     * @return an implementation of {@link ConfigManager}
+     * @return an implementation of {@link ConfigLoader}
      */
     @Contract("_, _, _ -> new")
     @NotNull
@@ -56,7 +56,7 @@ public interface ConfigManager {
     }
 
     /**
-     * Get an implementation of {@link ConfigManager}.
+     * Get an implementation of {@link ConfigLoader}.
      * <p>
      * Use {@link URL} to load. (It doesn't support save!)
      *
@@ -64,7 +64,7 @@ public interface ConfigManager {
      * @param parser the config parser. Also see {@link Parser} and {@link DefaultParsers}
      * @param url a {@link URL} of the config file.
      * @param <T> the type of your config class
-     * @return an implementation of {@link ConfigManager}
+     * @return an implementation of {@link ConfigLoader}
      */
     @Contract("_, _, _ -> new")
     @ApiStatus.Experimental
@@ -74,13 +74,13 @@ public interface ConfigManager {
     }
 
     /**
-     * A simple overload method of {@link ConfigManager#ofURL(Class, Parser, URL)}.
+     * A simple overload method of {@link ConfigLoader#ofURL(Class, Parser, URL)}.
      *
      * @param clazz the class type of your config class
      * @param parser the config parser. Also see {@link Parser} and {@link DefaultParsers}
      * @param uri a {@link URI} of the config file.
      * @param <T> the type of your config class
-     * @return an implementation of {@link ConfigManager}
+     * @return an implementation of {@link ConfigLoader}
      */
     @Contract("_, _, _ -> new")
     @ApiStatus.Experimental
@@ -101,7 +101,7 @@ public interface ConfigManager {
     /**
      * To reload the config.
      * <p>
-     * By default, this method just call {@link ConfigManager#load()}.
+     * By default, this method just call {@link ConfigLoader#load()}.
      */
     void reload();
 

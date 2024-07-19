@@ -1,4 +1,4 @@
-package xyz.tcbuildmc.common.config.v0.impl.util;
+package xyz.tcbuildmc.common.config.v0.impl.manager;
 
 import lombok.Getter;
 import xyz.tcbuildmc.common.config.v0.api.SimpleConfigApi;
@@ -17,12 +17,12 @@ public class FileConfigManager<T> extends AbstractConfigManager<T> {
 
     @Override
     public void load() {
-        setContent(SimpleConfigApi.getInstance().read(getClazz(), this.file, getParser()));
+        super.content = SimpleConfigApi.getInstance().read(getClazz(), this.file, getParser());
     }
 
     @Override
     public void save() {
-        SimpleConfigApi.getInstance().write(getClazz(), getContent(), this.file, getParser());
+        SimpleConfigApi.getInstance().write(getClazz(), super.content, this.file, getParser());
         this.load();
     }
 }

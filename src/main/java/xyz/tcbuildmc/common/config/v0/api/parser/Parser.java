@@ -12,20 +12,20 @@ import java.util.function.Function;
  */
 public interface Parser {
     /**
-     * Tool for parsing the config content.
+     * Tool for serializing the config content.
      *
      * @param clazz a class type
      * @param <T> the type of the class
      * @return a {@link Function} instance to use to parse the config content.
      */
-    <T> Function<String, T> read(Class<T> clazz);
+    <T> Function<String, T> serialize(Class<T> clazz);
 
     /**
-     * Tool for parsing the config class instance.
+     * Tool for deserializing the config class instance.
      *
      * @param clazz a class type
      * @param <T> the type of the class
      * @return a {@link Function} instance to use to parse the config class instance.
      */
-    <T> Function<T, String> write(Class<T> clazz);
+    <T> Function<T, String> deserialize(Class<T> clazz);
 }

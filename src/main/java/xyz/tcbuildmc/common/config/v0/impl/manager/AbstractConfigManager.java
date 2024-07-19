@@ -1,20 +1,19 @@
-package xyz.tcbuildmc.common.config.v0.impl.util;
+package xyz.tcbuildmc.common.config.v0.impl.manager;
 
 import lombok.Getter;
-import lombok.Setter;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 import xyz.tcbuildmc.common.config.v0.api.parser.Parser;
-import xyz.tcbuildmc.common.config.v0.api.util.ConfigManager;
+import xyz.tcbuildmc.common.config.v0.api.manager.ConfigLoader;
 
-@Getter
-public abstract class AbstractConfigManager<T> implements ConfigManager {
+public abstract class AbstractConfigManager<T> implements ConfigLoader {
+    @Getter
     private final Class<T> clazz;
+    @Getter
     private final Parser parser;
 
-    @Setter
     @Nullable
-    private T content;
+    public T content;
 
     @Contract(pure = true)
     public AbstractConfigManager(Class<T> clazz, Parser parser) {

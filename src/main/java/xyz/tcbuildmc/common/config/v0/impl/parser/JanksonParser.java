@@ -2,7 +2,6 @@ package xyz.tcbuildmc.common.config.v0.impl.parser;
 
 import blue.endless.jankson.Jankson;
 import blue.endless.jankson.api.SyntaxError;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import xyz.tcbuildmc.common.config.v0.api.parser.Parser;
@@ -10,8 +9,7 @@ import xyz.tcbuildmc.common.config.v0.api.parser.Parser;
 import java.lang.reflect.InvocationTargetException;
 import java.util.function.Function;
 
-@ApiStatus.Internal
-public final class JanksonParser implements Parser {
+public class JanksonParser implements Parser {
     private final Jankson jankson;
 
     @Contract(pure = true)
@@ -20,14 +18,13 @@ public final class JanksonParser implements Parser {
     }
 
     public JanksonParser() {
-        this.jankson = new Jankson.Builder()
-                .build();
+        this(new Jankson.Builder().build());
     }
 
     @Contract(pure = true)
     @NotNull
     @Override
-    public <T> Function<String, T> read(Class<T> clazz) {
+    public <T> Function<String, T> serialize(Class<T> clazz) {
         return content -> {
             try {
                 T instance = this.jankson.fromJson(content, clazz);
@@ -51,7 +48,7 @@ public final class JanksonParser implements Parser {
     @Contract(pure = true)
     @NotNull
     @Override
-    public <T> Function<T, String> write(Class<T> clazz) {
+    public <T> Function<T, String> deserialize(Class<T> clazz) {
         return instance -> this.jankson.toJson(instance).toJson(true, true);
     }
 }

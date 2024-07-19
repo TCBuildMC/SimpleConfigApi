@@ -30,4 +30,20 @@ public class ReadTest {
         TestConfig instance = SimpleConfigApi.getInstance().read(TestConfig.class, file, DefaultParsers.toml4j());
         System.out.println(instance);
     }
+
+    @Test
+    public void snakeYamlRead() {
+        File file = new File("run", "config.yml");
+
+        TestConfig instance = SimpleConfigApi.getInstance().read(TestConfig.class, file, DefaultParsers.snakeYaml());
+        System.out.println(instance);
+    }
+
+    @Test
+    public void fastjsonRead() {
+        File file = new File("run", "config.json");
+
+        TestConfig instance = SimpleConfigApi.getInstance().read(TestConfig.class, file, DefaultParsers.fastjson());
+        System.out.println(instance);
+    }
 }

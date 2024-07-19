@@ -7,10 +7,7 @@ import com.moandjiezana.toml.TomlWriter;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.yaml.snakeyaml.Yaml;
-import xyz.tcbuildmc.common.config.v0.impl.parser.GsonParser;
-import xyz.tcbuildmc.common.config.v0.impl.parser.JanksonParser;
-import xyz.tcbuildmc.common.config.v0.impl.parser.SnakeYamlParser;
-import xyz.tcbuildmc.common.config.v0.impl.parser.Toml4jParser;
+import xyz.tcbuildmc.common.config.v0.impl.parser.*;
 
 /**
  * The default config parsers of {@code simple-config-v0}.
@@ -119,5 +116,9 @@ public interface DefaultParsers {
     @NotNull
     static Parser snakeYaml(Yaml yaml) {
         return new SnakeYamlParser(yaml);
+    }
+
+    static FastjsonParser fastjson() {
+        return new FastjsonParser();
     }
 }

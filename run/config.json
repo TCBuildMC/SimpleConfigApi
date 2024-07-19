@@ -1,4 +1,14 @@
 {
   "lang": "zh_cn",
-  "time": 18
+  "time": 18,
+  "enable": false,
+  "depends": [
+    "creeper",
+    "steve",
+    "minecraft",
+    "jvav"
+  ],
+  "properties": {
+    "message": "hello world!"
+  }
 }

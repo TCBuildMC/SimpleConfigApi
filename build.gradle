@@ -20,10 +20,11 @@ dependencies {
 //    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-toml:2.17.2"
 //    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.17.2"
     implementation "com.google.code.gson:gson:2.11.0"
-    implementation "com.moandjiezana.toml:toml4j:0.7.2"
+    implementation 'com.alibaba.fastjson2:fastjson2:2.0.52'
     implementation "blue.endless:jankson:1.2.3"
 //    implementation "org.quiltmc.parsers:json:0.1.0"
     implementation "org.yaml:snakeyaml:2.2"
+    implementation "com.moandjiezana.toml:toml4j:0.7.2"
 
     implementation "commons-io:commons-io:2.16.1"
 

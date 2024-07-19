@@ -22,8 +22,7 @@ public class WriteTest {
                 Arrays.asList("creeper", "steve", "minecraft", "jvav"),
                 properties);
 
-        String json = SimpleConfigApi.getInstance().write(TestConfig.class, content, DefaultParsers.gson());
-        System.out.println(json);
+        SimpleConfigApi.getInstance().write(TestConfig.class, content, new File("run", "config.json"), DefaultParsers.gson());
     }
 
     @Test
@@ -54,5 +53,35 @@ public class WriteTest {
                 properties);
 
         System.out.println(SimpleConfigApi.getInstance().write(TestConfig.class, content, DefaultParsers.toml4j()));
+    }
+
+    @Test
+    public void snakeYamlWrite() {
+        Map<String, Object> properties = new LinkedHashMap<>();
+
+        properties.put("message", "hello world!");
+
+        TestConfig content = new TestConfig("zh_cn",
+                18,
+                false,
+                Arrays.asList("creeper", "steve", "minecraft", "jvav"),
+                properties);
+
+        System.out.println(SimpleConfigApi.getInstance().write(TestConfig.class, content, DefaultParsers.snakeYaml()));
+    }
+
+    @Test
+    public void fastjsonWrite() {
+        Map<String, Object> properties = new LinkedHashMap<>();
+
+        properties.put("message", "hello world!");
+
+        TestConfig content = new TestConfig("zh_cn",
+                18,
+                false,
+                Arrays.asList("creeper", "steve", "minecraft", "jvav"),
+                properties);
+
+        SimpleConfigApi.getInstance().write(TestConfig.class, content, new File("run", "config.json"), DefaultParsers.fastjson());
     }
 }

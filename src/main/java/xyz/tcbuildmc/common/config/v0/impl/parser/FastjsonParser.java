@@ -1,37 +1,27 @@
 package xyz.tcbuildmc.common.config.v0.impl.parser;
 
-import org.yaml.snakeyaml.Yaml;
+import com.alibaba.fastjson2.JSON;
 import xyz.tcbuildmc.common.config.v0.api.parser.Parser;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.function.Function;
 
-public class SnakeYamlParser implements Parser {
-    private final Yaml yaml;
-
-    public SnakeYamlParser(Yaml yaml) {
-        this.yaml = yaml;
-    }
-
-    public SnakeYamlParser() {
-        this(new Yaml());
-    }
-
+public class FastjsonParser implements Parser {
     @Override
     public <T> Function<String, T> serialize(Class<T> clazz) {
         return content -> {
             try {
-                T instance = this.yaml.load(content);
+                T instance = JSON.to(clazz, content);
 
                 if (instance == null) {
-                    return clazz.getDeclaredConstructor().newInstance();
+                    clazz.getDeclaredConstructor().newInstance();
                 }
 
                 return instance;
             } catch (InvocationTargetException |
-                     InstantiationException |
-                     IllegalAccessException |
-                     NoSuchMethodException e) {
+                      InstantiationException |
+                      IllegalAccessException |
+                      NoSuchMethodException e) {
 
                 throw new RuntimeException("Failed to parse.", e);
             }
@@ -40,6 +30,6 @@ public class SnakeYamlParser implements Parser {
 
     @Override
     public <T> Function<T, String> deserialize(Class<T> clazz) {
-        return this.yaml::dump;
+        return JSON::toJSONString;
     }
 }

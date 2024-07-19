@@ -36,7 +36,7 @@ public class Toml4jParser implements Parser {
                      IllegalAccessException |
                      NoSuchMethodException e) {
 
-                throw new RuntimeException(e);
+                throw new RuntimeException("Failed to parse.", e);
             }
         };
     }

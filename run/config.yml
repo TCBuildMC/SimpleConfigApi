@@ -1,0 +1,6 @@
+!!xyz.tcbuildmc.common.config.v0.test.TestConfig
+depends: [creeper, steve, minecraft, jvav]
+enable: false
+lang: zh_cn
+properties: {message: hello world!}
+time: 18

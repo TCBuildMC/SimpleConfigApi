@@ -6,8 +6,10 @@ import com.moandjiezana.toml.Toml;
 import com.moandjiezana.toml.TomlWriter;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.yaml.snakeyaml.Yaml;
 import xyz.tcbuildmc.common.config.v0.impl.parser.GsonParser;
 import xyz.tcbuildmc.common.config.v0.impl.parser.JanksonParser;
+import xyz.tcbuildmc.common.config.v0.impl.parser.SnakeYamlParser;
 import xyz.tcbuildmc.common.config.v0.impl.parser.Toml4jParser;
 
 /**
@@ -92,5 +94,30 @@ public interface DefaultParsers {
     @NotNull
     static Parser toml4j(Toml toml, TomlWriter tomlWriter) {
         return new Toml4jParser(toml, tomlWriter);
+    }
+
+    /**
+     * Get SnakeYaml config parser to parse.
+     *
+     * @return a {@link Parser} using SnakeYaml
+     * @since 1.1.1
+     */
+    @Contract(" -> new")
+    @NotNull
+    static Parser snakeYaml() {
+        return new SnakeYamlParser();
+    }
+
+    /**
+     * Get SnakeYaml config parser to parse.
+     *
+     * @param yaml a {@link Yaml} instance
+     * @return a {@link Parser} using SnakeYaml
+     * @since 1.1.1
+     */
+    @Contract(value = "_ -> new", pure = true)
+    @NotNull
+    static Parser snakeYaml(Yaml yaml) {
+        return new SnakeYamlParser(yaml);
     }
 }

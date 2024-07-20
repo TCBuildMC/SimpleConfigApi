@@ -3,6 +3,7 @@ package xyz.tcbuildmc.common.config.v0.test;
 import org.junit.jupiter.api.Test;
 import xyz.tcbuildmc.common.config.v0.api.SimpleConfigApi;
 import xyz.tcbuildmc.common.config.v0.api.parser.DefaultParsers;
+import xyz.tcbuildmc.common.config.v0.api.model.ConfigObject;
 
 import java.io.File;
 
@@ -29,6 +30,15 @@ public class ReadTest {
 
         TestConfig instance = SimpleConfigApi.getInstance().read(TestConfig.class, file, DefaultParsers.toml4j());
         System.out.println(instance);
+
+        ConfigObject object = SimpleConfigApi.getInstance().read(file, DefaultParsers.toml4j());
+        System.out.println(object.getMap("properties"));
+
+        object.set("time", 17);
+        System.out.println(object.getInt("time"));
+
+        object.delete("time");
+        System.out.println(object.contains("time"));
     }
 
     @Test

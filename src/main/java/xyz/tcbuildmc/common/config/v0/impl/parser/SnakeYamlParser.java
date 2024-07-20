@@ -18,7 +18,7 @@ public class SnakeYamlParser implements Parser {
     }
 
     @Override
-    public <T> Function<String, T> serialize(Class<T> clazz) {
+    public <T> Function<String, T> toObject(Class<T> clazz) {
         return content -> {
             try {
                 T instance = this.yaml.load(content);
@@ -39,7 +39,7 @@ public class SnakeYamlParser implements Parser {
     }
 
     @Override
-    public <T> Function<T, String> deserialize(Class<T> clazz) {
+    public <T> Function<T, String> toConfig(Class<T> clazz) {
         return this.yaml::dump;
     }
 }

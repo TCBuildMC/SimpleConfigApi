@@ -15,7 +15,6 @@ import xyz.tcbuildmc.common.config.v0.impl.parser.*;
  * For now, the library just supports Gson, Jankson, Toml4j.
  *
  * @since 1.0.0
- * @author Block_Mrlimr267
  */
 public interface DefaultParsers {
     /**

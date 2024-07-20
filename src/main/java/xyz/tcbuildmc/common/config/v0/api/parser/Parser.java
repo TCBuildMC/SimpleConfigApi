@@ -8,7 +8,6 @@ import java.util.function.Function;
  * If you want to make a custom {@link Parser}, simply implements this.
  *
  * @since 1.0.0
- * @author Block_Mrlimr267
  */
 public interface Parser {
     /**
@@ -18,7 +17,7 @@ public interface Parser {
      * @param <T> the type of the class
      * @return a {@link Function} instance to use to parse the config content.
      */
-    <T> Function<String, T> serialize(Class<T> clazz);
+    <T> Function<String, T> toObject(Class<T> clazz);
 
     /**
      * Tool for deserializing the config class instance.
@@ -27,5 +26,5 @@ public interface Parser {
      * @param <T> the type of the class
      * @return a {@link Function} instance to use to parse the config class instance.
      */
-    <T> Function<T, String> deserialize(Class<T> clazz);
+    <T> Function<T, String> toConfig(Class<T> clazz);
 }

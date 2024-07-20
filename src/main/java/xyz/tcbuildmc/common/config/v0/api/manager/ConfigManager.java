@@ -20,11 +20,11 @@ import java.nio.file.Path;
  * It's like Bukkit config api.
  *
  * @since 1.0.1
- * @author Block_Mrlimr267
  */
-public interface ConfigLoader {
+@ApiStatus.Experimental
+public interface ConfigManager {
     /**
-     * Get an implementation of {@link ConfigLoader}.
+     * Get an implementation of {@link ConfigManager}.
      * <p>
      * Use {@link File} to load/ save.
      *
@@ -32,7 +32,7 @@ public interface ConfigLoader {
      * @param parser the config parser. Also see {@link Parser} and {@link DefaultParsers}
      * @param file the config {@link File}
      * @param <T> the type of your config class
-     * @return an implementation of {@link ConfigLoader}
+     * @return an implementation of {@link ConfigManager}
      */
     @Contract("_, _, _ -> new")
     @NotNull
@@ -41,13 +41,13 @@ public interface ConfigLoader {
     }
 
     /**
-     * A simple overload method of {@link ConfigLoader#ofFile(Class, Parser, File)} (By {@link Path#toFile()}).
+     * A simple overload method of {@link ConfigManager#ofFile(Class, Parser, File)} (By {@link Path#toFile()}).
      *
      * @param clazz the class type of your config class
      * @param parser the config parser. Also see {@link Parser} and {@link DefaultParsers}
      * @param path the {@link Path} of the config {@link File}
      * @param <T> the type of your config class
-     * @return an implementation of {@link ConfigLoader}
+     * @return an implementation of {@link ConfigManager}
      */
     @Contract("_, _, _ -> new")
     @NotNull
@@ -56,7 +56,7 @@ public interface ConfigLoader {
     }
 
     /**
-     * Get an implementation of {@link ConfigLoader}.
+     * Get an implementation of {@link ConfigManager}.
      * <p>
      * Use {@link URL} to load. (It doesn't support save!)
      *
@@ -64,7 +64,7 @@ public interface ConfigLoader {
      * @param parser the config parser. Also see {@link Parser} and {@link DefaultParsers}
      * @param url a {@link URL} of the config file.
      * @param <T> the type of your config class
-     * @return an implementation of {@link ConfigLoader}
+     * @return an implementation of {@link ConfigManager}
      */
     @Contract("_, _, _ -> new")
     @ApiStatus.Experimental
@@ -74,13 +74,13 @@ public interface ConfigLoader {
     }
 
     /**
-     * A simple overload method of {@link ConfigLoader#ofURL(Class, Parser, URL)}.
+     * A simple overload method of {@link ConfigManager#ofURL(Class, Parser, URL)}.
      *
      * @param clazz the class type of your config class
      * @param parser the config parser. Also see {@link Parser} and {@link DefaultParsers}
      * @param uri a {@link URI} of the config file.
      * @param <T> the type of your config class
-     * @return an implementation of {@link ConfigLoader}
+     * @return an implementation of {@link ConfigManager}
      */
     @Contract("_, _, _ -> new")
     @ApiStatus.Experimental
@@ -101,7 +101,7 @@ public interface ConfigLoader {
     /**
      * To reload the config.
      * <p>
-     * By default, this method just call {@link ConfigLoader#load()}.
+     * By default, this method just call {@link ConfigManager#load()}.
      */
     void reload();
 

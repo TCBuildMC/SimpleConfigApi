@@ -8,10 +8,10 @@ import java.util.function.Function;
 
 public class FastjsonParser implements Parser {
     @Override
-    public <T> Function<String, T> serialize(Class<T> clazz) {
+    public <T> Function<String, T> toObject(Class<T> clazz) {
         return content -> {
             try {
-                T instance = JSON.to(clazz, content);
+                T instance = JSON.parseObject(content, clazz);
 
                 if (instance == null) {
                     clazz.getDeclaredConstructor().newInstance();
@@ -29,7 +29,7 @@ public class FastjsonParser implements Parser {
     }
 
     @Override
-    public <T> Function<T, String> deserialize(Class<T> clazz) {
+    public <T> Function<T, String> toConfig(Class<T> clazz) {
         return JSON::toJSONString;
     }
 }

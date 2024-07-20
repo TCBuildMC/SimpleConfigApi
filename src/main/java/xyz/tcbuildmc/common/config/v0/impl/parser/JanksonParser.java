@@ -24,7 +24,7 @@ public class JanksonParser implements Parser {
     @Contract(pure = true)
     @NotNull
     @Override
-    public <T> Function<String, T> serialize(Class<T> clazz) {
+    public <T> Function<String, T> toObject(Class<T> clazz) {
         return content -> {
             try {
                 T instance = this.jankson.fromJson(content, clazz);
@@ -48,7 +48,7 @@ public class JanksonParser implements Parser {
     @Contract(pure = true)
     @NotNull
     @Override
-    public <T> Function<T, String> deserialize(Class<T> clazz) {
+    public <T> Function<T, String> toConfig(Class<T> clazz) {
         return instance -> this.jankson.toJson(instance).toJson(true, true);
     }
 }

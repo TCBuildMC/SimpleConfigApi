@@ -21,7 +21,7 @@ public class Toml4jParser implements Parser {
     }
 
     @Override
-    public <T> Function<String, T> serialize(Class<T> clazz) {
+    public <T> Function<String, T> toObject(Class<T> clazz) {
         return content -> {
             try {
                 T instance = this.toml.read(content).to(clazz);
@@ -42,7 +42,7 @@ public class Toml4jParser implements Parser {
     }
 
     @Override
-    public <T> Function<T, String> deserialize(Class<T> clazz) {
+    public <T> Function<T, String> toConfig(Class<T> clazz) {
         return this.tomlWriter::write;
     }
 }

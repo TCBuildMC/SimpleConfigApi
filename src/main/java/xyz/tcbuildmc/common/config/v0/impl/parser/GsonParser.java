@@ -25,7 +25,7 @@ public class GsonParser implements Parser {
     @Contract(pure = true)
     @NotNull
     @Override
-    public <T> Function<String, T> serialize(Class<T> clazz) {
+    public <T> Function<String, T> toObject(Class<T> clazz) {
         return content -> {
             try {
                 T instance = this.gson.fromJson(content, clazz);
@@ -49,7 +49,7 @@ public class GsonParser implements Parser {
     @Contract(pure = true)
     @NotNull
     @Override
-    public <T> Function<T, String> deserialize(Class<T> clazz) {
+    public <T> Function<T, String> toConfig(Class<T> clazz) {
         return this.gson::toJson;
     }
 }

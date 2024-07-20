@@ -111,7 +111,7 @@ public class ConfigObject extends LinkedHashMap<String, Object> implements Map<S
      * <p>
      * If the value is {@code null}, the config key and value will be deleted.
      * <p>
-     * If the value in config exists, it will be replaced by value in the method.
+     * If the value in config exists, it will be replaced with value in the method.
      * <p>
      * Otherwise, it will add the key and the value to the config.
      *

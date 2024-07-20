@@ -38,7 +38,7 @@ ConfigObject object = SimpleConfigApi.getInstance().read(yourConfigFile, Default
 // Read a value of your config file by ConfigObject:
 var yourConfigValue = object.get("yourConfigKey");
 
-// Delete a value of your config file by ConfigContent:
+// Delete a value of your config file by ConfigObject:
 object.set("yourConfigKey", null);
 
 // Replace / Add a pair of config key and value:

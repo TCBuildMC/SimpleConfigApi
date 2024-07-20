@@ -1,12 +1,11 @@
 package xyz.tcbuildmc.common.config.v0.api.model;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
 /**
@@ -16,6 +15,13 @@ import java.util.function.Supplier;
  */
 @SuppressWarnings("unused")
 public class ConfigObject extends LinkedHashMap<String, Object> implements Map<String, Object> {
+    public ConfigObject() {
+    }
+
+    public ConfigObject(Map<? extends String, ?> m) {
+        super(m);
+    }
+
     /**
      * An implementation of {@link Map#get(Object)} (Config key is {@link String} only).
      *
@@ -28,6 +34,57 @@ public class ConfigObject extends LinkedHashMap<String, Object> implements Map<S
         return (T) super.get(key);
     }
 
+    @Nullable
+    public <T> T getByPath(@NotNull String path) {
+        String[] keys = path.split("\\.");
+
+        Object self = new ConfigObject(this);
+        for (String key : keys) {
+            if (key == null) {
+                return null;
+            }
+
+            if (self instanceof Map) {
+                Map<String, ?> instance = (Map<String, ?>) self;
+
+                if (!instance.containsKey(key)) {
+                    return null;
+                }
+
+                if (instance.get(key) instanceof List) {
+                    self = (List<?>) instance.get(key);
+                    continue;
+                } else if (instance.get(key) instanceof Map) {
+                    self = (Map<String, ?>) instance.get(key);
+                    continue;
+                }
+                self = instance.get(key);
+
+            } else if (self instanceof List) {
+                List<?> instance = (List<?>) self;
+                int index = Integer.parseInt(key) - 1;
+
+                if (index < 0 || index >= instance.size()) {
+                    return null;
+                }
+
+                if (instance.get(index) instanceof List) {
+                    self = (List<?>) instance.get(index);
+                    continue;
+                } else if (instance.get(index) instanceof Map) {
+                    self = (Map<String, ?>) instance.get(index);
+                    continue;
+                }
+
+                self = instance.get(index);
+            } else {
+                break;
+            }
+        }
+
+        return (T) self;
+    }
+
     /**
      * An implementation of {@link Map#getOrDefault(Object, Object)} (Config key is {@link String} only).
      *
@@ -38,7 +95,22 @@ public class ConfigObject extends LinkedHashMap<String, Object> implements Map<S
      */
     @NotNull
     public <T> T getOrDefault(String key, T defaultValue) {
-        T value = get(key);
+        T value = this.get(key);
+
+        if (value == null) {
+            if (defaultValue == null) {
+                throw new NullPointerException();
+            }
+
+            return defaultValue;
+        }
+
+        return value;
+    }
+
+    @NotNull
+    public <T> T getByPathOrDefault(String path, T defaultValue) {
+        T value = this.getByPath(path);
 
         if (value == null) {
             if (defaultValue == null) {
@@ -64,12 +136,33 @@ public class ConfigObject extends LinkedHashMap<String, Object> implements Map<S
         return this.getOrDefault(key, supplier.get());
     }
 
+    @Contract("_, null -> fail")
+    @NotNull
+    public <T> T getByPathOrDefault(String path, Supplier<T> supplier) {
+        if (supplier == null) {
+            throw new NullPointerException();
+        }
+
+        return this.getByPathOrDefault(path, supplier.get());
+    }
+
     /**
      * @see ConfigObject#get(String) 
      */
     @NotNull
     public <T> T getOrThrow(String key) {
         T value = this.get(key);
+
+        if (value == null) {
+            throw new NullPointerException();
+        }
+
+        return value;
+    }
+
+    @NotNull
+    public <T> T getByPathOrThrow(String path) {
+        T value = this.getByPath(path);
 
         if (value == null) {
             throw new NullPointerException();
@@ -92,12 +185,34 @@ public class ConfigObject extends LinkedHashMap<String, Object> implements Map<S
         return value;
     }
 
+    @NotNull
+    public <T, X extends Throwable> T getByPathOrThrow(String path, X e) throws X {
+        T value = this.getByPath(path);
+
+        if (value == null) {
+            throw e;
+        }
+
+        return value;
+    }
+
     /**
      * @see ConfigObject#getOrThrow(String, Throwable)
      */
     @NotNull
     public <T, X extends Throwable> T getOrThrow(String key, Supplier<X> supplier) throws X {
         T value = this.get(key);
+
+        if (value == null) {
+            throw supplier.get();
+        }
+
+        return value;
+    }
+
+    @NotNull
+    public <T, X extends Throwable> T getByPathOrThrow(String path, Supplier<X> supplier) throws X {
+        T value = this.getByPath(path);
 
         if (value == null) {
             throw supplier.get();
@@ -146,241 +261,6 @@ public class ConfigObject extends LinkedHashMap<String, Object> implements Map<S
     public boolean contains(String key) {
         return super.containsKey(key);
     }
-
-    /**
-     * @see ConfigObject#get(String)
-     */
-    public int getInt(String key) throws NullPointerException {
-        return (int) get(key);
-    }
-
-    /**
-     * @see ConfigObject#getOrDefault(String, Object)
-     */
-    public int getIntOrDefault(String key, int defaultValue) {
-        return (int) getOrDefault(key, defaultValue);
-    }
-
-    /**
-     * @see ConfigObject#getOrDefault(String, Supplier) 
-     */
-    public int getIntOrDefault(String key, Supplier<Integer> supplier) {
-        return (int) getOrDefault(key, supplier);
-    }
-
-    /**
-     * @see ConfigObject#getOrThrow(String)
-     */
-    public int getIntOrThrow(String key) {
-        return (int) getOrThrow(key);
-    }
-
-
-    /**
-     * @see ConfigObject#get(String)
-     */
-    public float getFloat(String key) throws NullPointerException {
-        return (float) get(key);
-    }
-
-    /**
-     * @see ConfigObject#getOrDefault(String, Object)
-     */
-    public float getFloatOrDefault(String key, float defaultValue) {
-        return (float) getOrDefault(key, defaultValue);
-    }
-
-    /**
-     * @see ConfigObject#getOrDefault(String, Supplier)
-     */
-    public float getFloatOrDefault(String key, Supplier<Float> supplier) {
-        return (float) getOrDefault(key, supplier);
-    }
-
-    /**
-     * @see ConfigObject#getOrThrow(String)
-     */
-    public float getFloatOrThrow(String key) {
-        return (float) getOrThrow(key);
-    }
-
-
-    /**
-     * @see ConfigObject#get(String)
-     */
-    public double getDouble(String key) throws NullPointerException {
-        return (double) get(key);
-    }
-
-    /**
-     * @see ConfigObject#getOrDefault(String, Object)
-     */
-    public double getDoubleOrDefault(String key, double defaultValue) {
-        return (double) getOrDefault(key, defaultValue);
-    }
-
-    /**
-     * @see ConfigObject#getOrDefault(String, Supplier)
-     */
-    public double getDoubleOrDefault(String key, Supplier<Double> supplier) {
-        return (double) getOrDefault(key, supplier);
-    }
-
-    /**
-     * @see ConfigObject#getOrThrow(String)
-     */
-    public double getDoubleOrThrow(String key) {
-        return (double) getOrThrow(key);
-    }
-
-
-    /**
-     * @see ConfigObject#get(String)
-     */
-    public long getLong(String key) throws NullPointerException {
-        return (long) get(key);
-    }
-
-    /**
-     * @see ConfigObject#getOrDefault(String, Object)
-     */
-    public long getLongOrDefault(String key, long defaultValue) {
-        return (long) getOrDefault(key, defaultValue);
-    }
-
-    /**
-     * @see ConfigObject#getOrDefault(String, Supplier)
-     */
-    public long getLongOrDefault(String key, Supplier<Long> supplier) {
-        return (long) getOrDefault(key, supplier);
-    }
-
-    /**
-     * @see ConfigObject#getOrThrow(String)
-     */
-    public long getLongOrThrow(String key) {
-        return (long) getOrThrow(key);
-    }
-
-
-    /**
-     * @see ConfigObject#get(String)
-     */
-    public short getShort(String key) throws NullPointerException {
-        return (short) get(key);
-    }
-
-    /**
-     * @see ConfigObject#getOrDefault(String, Object)
-     */
-    public short getShortOrDefault(String key, short defaultValue) {
-        return (short) getOrDefault(key, defaultValue);
-    }
-
-    /**
-     * @see ConfigObject#getOrDefault(String, Supplier)
-     */
-    public short getShortOrDefault(String key, Supplier<Short> supplier) {
-        return (short) getOrDefault(key, supplier);
-    }
-
-    /**
-     * @see ConfigObject#getOrThrow(String)
-     */
-    public short getShortOrThrow(String key) {
-        return (short) getOrThrow(key);
-    }
-
-
-    /**
-     * @see ConfigObject#get(String)
-     */
-    @Nullable
-    public String getString(String key) {
-        return (String) get(key);
-    }
-
-    /**
-     * @see ConfigObject#getOrDefault(String, Object)
-     */
-    public String getStringOrDefault(String key, String defaultValue) {
-        return (String) getOrDefault(key, defaultValue);
-    }
-
-    /**
-     * @see ConfigObject#getOrDefault(String, Supplier)
-     */
-    public String getStringOrDefault(String key, Supplier<String> supplier) {
-        return (String) getOrDefault(key, supplier);
-    }
-
-    /**
-     * @see ConfigObject#getOrThrow(String)
-     */
-    public String getStringOrThrow(String key) {
-        return (String) getOrThrow(key);
-    }
-
-
-    /**
-     * @see ConfigObject#get(String)
-     */
-    @Nullable
-    public List<?> getList(String key) {
-        return (List<?>) get(key);
-    }
-
-    /**
-     * @see ConfigObject#getOrDefault(String, Object)
-     */
-    public List<?> getListOrDefault(String key, List<?> defaultValue) {
-        return (List<?>) getOrDefault(key, defaultValue);
-    }
-
-    /**
-     * @see ConfigObject#getOrDefault(String, Supplier)
-     */
-    public List<?> getListOrDefault(String key, Supplier<List<?>> supplier) {
-        return (List<?>) getOrDefault(key, supplier);
-    }
-
-    /**
-     * @see ConfigObject#getOrThrow(String)
-     */
-    public List<?> getListOrThrow(String key) {
-        return (List<?>) getOrThrow(key);
-    }
-
-
-    /**
-     * @see ConfigObject#get(String)
-     */
-    @Nullable
-    public Map<String, ?> getMap(String key) throws NullPointerException {
-        return (Map<String, ?>) get(key);
-    }
-
-    /**
-     * @see ConfigObject#getOrDefault(String, Object)
-     */
-    public Map<String, ?> getMapOrDefault(String key, Map<String, ?> defaultValue) {
-        return (Map<String, ?>) getOrDefault(key, defaultValue);
-    }
-
-    /**
-     * @see ConfigObject#getOrDefault(String, Supplier)
-     */
-    public Map<String, ?> getMapOrDefault(String key, Supplier<Map<String, ?>> supplier) {
-        return (Map<String, ?>) getOrDefault(key, supplier);
-    }
-
-    /**
-     * @see ConfigObject#getOrThrow(String)
-     */
-    public Map<String, ?> getMapOrThrow(String key) {
-        return (Map<String, ?>) getOrThrow(key);
-    }
-
 
     /**
      * A helper method for {@link ConfigObject#set(String, Object)}.

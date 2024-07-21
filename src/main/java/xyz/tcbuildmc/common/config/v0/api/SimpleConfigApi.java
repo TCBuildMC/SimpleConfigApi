@@ -298,4 +298,24 @@ public interface SimpleConfigApi {
     default void write(ConfigObject object, OutputStream os, Parser parser) {
         write(ConfigObject.class, object, os, parser);
     }
+
+    /**
+     * @see SimpleConfigApi#write(ConfigObject, Parser)
+     * @see SimpleConfigApi#read(Class, String, Parser)
+     * @since 1.2.1-hotfix.1
+     */
+    default <T> T toJavaObject(Class<T> clazz, ConfigObject object, Parser parser) {
+        String config = write(object, parser);
+        return (T) read(clazz, config, parser);
+    }
+
+    /**
+     * @see SimpleConfigApi#write(Class, Object, Parser)
+     * @see SimpleConfigApi#read(String, Parser)
+     * @since 1.2.1-hotfix.1
+     */
+    default <T> ConfigObject toConfigObject(Class<T> clazz, T content, Parser parser) {
+        String config = write(clazz, content, parser);
+        return read(config, parser);
+    }
 }

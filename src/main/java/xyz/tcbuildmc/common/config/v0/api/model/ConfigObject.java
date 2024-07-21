@@ -1,9 +1,10 @@
 package xyz.tcbuildmc.common.config.v0.api.model;
 
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import xyz.tcbuildmc.common.config.v0.api.SimpleConfigApi;
+import xyz.tcbuildmc.common.config.v0.api.parser.Parser;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -15,9 +16,17 @@ import java.util.function.Supplier;
  */
 @SuppressWarnings("unused")
 public class ConfigObject extends LinkedHashMap<String, Object> implements Map<String, Object> {
+    /**
+     * A constructor of {@link ConfigObject} with no args.
+     */
     public ConfigObject() {
     }
 
+    /**
+     * A constructor of {@link ConfigObject}.
+     *
+     * @param m the map {@link ConfigObject} will inherit.
+     */
     public ConfigObject(Map<? extends String, ?> m) {
         super(m);
     }
@@ -34,16 +43,20 @@ public class ConfigObject extends LinkedHashMap<String, Object> implements Map<S
         return (T) super.get(key);
     }
 
+    /**
+     * A method to find config value of specified config path.
+     *
+     * @param path the config path
+     * @param <T> a type
+     * @return the value of the config key
+     * @since 1.2.1
+     */
     @Nullable
     public <T> T getByPath(@NotNull String path) {
         String[] keys = path.split("\\.");
 
         Object self = new ConfigObject(this);
         for (String key : keys) {
-            if (key == null) {
-                return null;
-            }
-
             if (self instanceof Map) {
                 Map<String, ?> instance = (Map<String, ?>) self;
 
@@ -51,29 +64,13 @@ public class ConfigObject extends LinkedHashMap<String, Object> implements Map<S
                     return null;
                 }
 
-                if (instance.get(key) instanceof List) {
-                    self = (List<?>) instance.get(key);
-                    continue;
-                } else if (instance.get(key) instanceof Map) {
-                    self = (Map<String, ?>) instance.get(key);
-                    continue;
-                }
                 self = instance.get(key);
-
             } else if (self instanceof List) {
                 List<?> instance = (List<?>) self;
                 int index = Integer.parseInt(key) - 1;
 
                 if (index < 0 || index >= instance.size()) {
                     return null;
-                }
-
-                if (instance.get(index) instanceof List) {
-                    self = (List<?>) instance.get(index);
-                    continue;
-                } else if (instance.get(index) instanceof Map) {
-                    self = (Map<String, ?>) instance.get(index);
-                    continue;
                 }
 
                 self = instance.get(index);
@@ -108,6 +105,11 @@ public class ConfigObject extends LinkedHashMap<String, Object> implements Map<S
         return value;
     }
 
+    /**
+     * @see ConfigObject#getOrDefault(String, Object)
+     * @see ConfigObject#getByPath(String)
+     * @since 1.2.1
+     */
     @NotNull
     public <T> T getByPathOrDefault(String path, T defaultValue) {
         T value = this.getByPath(path);
@@ -136,6 +138,10 @@ public class ConfigObject extends LinkedHashMap<String, Object> implements Map<S
         return this.getOrDefault(key, supplier.get());
     }
 
+    /**
+     * @see ConfigObject#getByPathOrDefault(String, Object)
+     * @since 1.2.1
+     */
     @Contract("_, null -> fail")
     @NotNull
     public <T> T getByPathOrDefault(String path, Supplier<T> supplier) {
@@ -160,6 +166,11 @@ public class ConfigObject extends LinkedHashMap<String, Object> implements Map<S
         return value;
     }
 
+    /**
+     * @see ConfigObject#getOrThrow(String)
+     * @see ConfigObject#getByPath(String)
+     * @since 1.2.1
+     */
     @NotNull
     public <T> T getByPathOrThrow(String path) {
         T value = this.getByPath(path);
@@ -185,6 +196,10 @@ public class ConfigObject extends LinkedHashMap<String, Object> implements Map<S
         return value;
     }
 
+    /**
+     * @see ConfigObject#getByPathOrThrow(String)
+     * @since 1.2.1
+     */
     @NotNull
     public <T, X extends Throwable> T getByPathOrThrow(String path, X e) throws X {
         T value = this.getByPath(path);
@@ -210,6 +225,10 @@ public class ConfigObject extends LinkedHashMap<String, Object> implements Map<S
         return value;
     }
 
+    /**
+     * @see ConfigObject#getByPathOrThrow(String, Throwable)
+     * @since 1.2.1
+     */
     @NotNull
     public <T, X extends Throwable> T getByPathOrThrow(String path, Supplier<X> supplier) throws X {
         T value = this.getByPath(path);
@@ -219,6 +238,16 @@ public class ConfigObject extends LinkedHashMap<String, Object> implements Map<S
         }
 
         return value;
+    }
+
+    /**
+     * Returns whether the value of the key exists.
+     *
+     * @param key the config key
+     * @return Whether the value of the key exists
+     */
+    public boolean contains(String key) {
+        return super.containsKey(key);
     }
 
     /**
@@ -248,18 +277,18 @@ public class ConfigObject extends LinkedHashMap<String, Object> implements Map<S
      * @deprecated
      */
     @Deprecated
-    public void delete(String key) {
-        this.set(key, null);
+    public void add(String key, String value) {
+        this.put(key, value);
     }
 
     /**
-     * Returns whether the value of the key exists.
+     * Use {@link ConfigObject#set(String, Object)} instead.
      *
-     * @param key the config key
-     * @return Whether the value of the key exists
+     * @deprecated
      */
-    public boolean contains(String key) {
-        return super.containsKey(key);
+    @Deprecated
+    public void delete(String key) {
+        this.remove(key);
     }
 
     /**

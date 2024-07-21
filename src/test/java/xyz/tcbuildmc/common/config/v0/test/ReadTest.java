@@ -6,6 +6,7 @@ import xyz.tcbuildmc.common.config.v0.api.parser.DefaultParsers;
 import xyz.tcbuildmc.common.config.v0.api.model.ConfigObject;
 
 import java.io.File;
+import java.util.Map;
 
 public class ReadTest {
     @Test
@@ -32,12 +33,12 @@ public class ReadTest {
         System.out.println(instance);
 
         ConfigObject object = SimpleConfigApi.getInstance().read(file, DefaultParsers.toml4j());
-        System.out.println(object.getMap("properties"));
+        System.out.println((Map<String, ?>) object.get("properties"));
 
         object.set("time", 17);
-        System.out.println(object.getInt("time"));
+        System.out.println((int) object.get("time"));
 
-        object.delete("time");
+        object.set("time", null);
         System.out.println(object.contains("time"));
     }
 

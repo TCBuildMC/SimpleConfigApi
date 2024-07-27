@@ -1,6 +1,7 @@
 plugins {
     id "java-library"
     id "maven-publish"
+    id "com.github.johnrengelman.shadow" version "8.1.1"
 }
 
 group = rootProject.maven_group
@@ -20,7 +21,7 @@ dependencies {
 //    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-toml:2.17.2"
 //    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.17.2"
     implementation "com.google.code.gson:gson:2.11.0"
-    implementation 'com.alibaba.fastjson2:fastjson2:2.0.52'
+    implementation "com.alibaba.fastjson2:fastjson2:2.0.52"
     implementation "blue.endless:jankson:1.2.3"
 //    implementation "org.quiltmc.parsers:json:0.1.0"
     implementation "org.yaml:snakeyaml:2.2"
@@ -67,6 +68,26 @@ jar {
 }
 
 compileJava.dependsOn clean
+
+shadowJar {
+    archiveClassifier.set "shaded"
+
+    def reloc = { String from, String to ->
+        relocate from, to
+    }
+
+    reloc "com.google.gson",       "xyz.tcbuildmc.common.config.v0.lib.gson"
+    reloc "com.google.errorprone", "xyz.tcbuildmc.common.config.v0.lib.errorprone"
+    reloc "com.alibaba.fastjson2", "xyz.tcbuildmc.common.config.v0.lib.fastjson2"
+    reloc "blue.endless.jankson",  "xyz.tcbuildmc.common.config.v0.lib.jankson"
+    reloc "org.yaml.snakeyaml",    "xyz.tcbuildmc.common.config.v0.lib.snakeyaml"
+    reloc "com.moandjiezana.toml", "xyz.tcbuildmc.common.config.v0.lib.toml4j"
+    reloc "org.apache.commons.io", "xyz.tcbuildmc.common.config.v0.lib.commons-io"
+
+    exclude "schema/**"
+}
+
+assemble.dependsOn shadowJar
 
 publishing {
     publications {

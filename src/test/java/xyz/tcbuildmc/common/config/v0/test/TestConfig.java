@@ -1,7 +1,7 @@
 package xyz.tcbuildmc.common.config.v0.test;
 
 import blue.endless.jankson.Comment;
-import com.moandjiezana.toml.annotation.TomlComment;
+import xyz.tcbuildmc.common.config.v0.api.annotation.TomlComment;
 import lombok.*;
 
 import java.util.List;

@@ -2,7 +2,7 @@ package xyz.tcbuildmc.common.config.v0.impl.parser;
 
 import com.moandjiezana.toml.Toml;
 import com.moandjiezana.toml.TomlWriter;
-import com.moandjiezana.toml.annotation.TomlComment;
+import xyz.tcbuildmc.common.config.v0.api.annotation.TomlComment;
 
 import java.lang.reflect.Field;
 import java.util.LinkedHashMap;

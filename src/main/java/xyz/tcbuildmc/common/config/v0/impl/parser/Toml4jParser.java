@@ -2,6 +2,8 @@ package xyz.tcbuildmc.common.config.v0.impl.parser;
 
 import com.moandjiezana.toml.Toml;
 import com.moandjiezana.toml.TomlWriter;
+import lombok.AccessLevel;
+import lombok.Getter;
 import xyz.tcbuildmc.common.config.v0.api.parser.Parser;
 
 import java.lang.reflect.InvocationTargetException;
@@ -9,6 +11,7 @@ import java.util.function.Function;
 
 public class Toml4jParser implements Parser {
     private final Toml toml;
+    @Getter(AccessLevel.PACKAGE)
     private final TomlWriter tomlWriter;
 
     public Toml4jParser(Toml toml, TomlWriter tomlWriter) {

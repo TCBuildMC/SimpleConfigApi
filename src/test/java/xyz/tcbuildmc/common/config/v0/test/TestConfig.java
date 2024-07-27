@@ -1,6 +1,7 @@
 package xyz.tcbuildmc.common.config.v0.test;
 
 import blue.endless.jankson.Comment;
+import com.moandjiezana.toml.annotation.TomlComment;
 import lombok.*;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.Map;
 @EqualsAndHashCode(callSuper = false)
 public class TestConfig {
     @Comment("Language of the app.")
+    @TomlComment("Language of the app.")
     private String lang;
     private int time;
 

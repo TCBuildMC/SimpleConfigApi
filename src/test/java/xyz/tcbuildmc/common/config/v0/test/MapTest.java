@@ -1,13 +1,13 @@
 package xyz.tcbuildmc.common.config.v0.test;
 
+import com.google.gson.Gson;
+import lombok.*;
 import org.junit.jupiter.api.Test;
 import xyz.tcbuildmc.common.config.v0.api.SimpleConfigApi;
 import xyz.tcbuildmc.common.config.v0.api.model.ConfigObject;
 import xyz.tcbuildmc.common.config.v0.api.parser.DefaultParsers;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MapTest {
     @Test
@@ -47,5 +47,34 @@ public class MapTest {
         System.out.println(o2);
 
         System.out.println(SimpleConfigApi.getInstance().toJavaObject(Map.class, object, DefaultParsers.gson()));
+    }
+
+    @Test
+    public void configInConfigTest() {
+        System.out.println(SimpleConfigApi.getInstance().write(Config1.class, new Config1(), DefaultParsers.gson(new Gson())));
+
+        String json = "{\"commandAwa\":{\"enable\":true,\"exceptPlayers\":[]}}";
+        Config1 c = SimpleConfigApi.getInstance().read(Config1.class, json, DefaultParsers.gson());
+        System.out.println(c.getCommandAwa());
+        System.out.println(c);
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ToString(callSuper = false)
+    @EqualsAndHashCode(callSuper = false)
+    public static class Config1 {
+        private Config2 commandAwa = new Config2();
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ToString(callSuper = false)
+    @EqualsAndHashCode(callSuper = false)
+    public static class Config2 {
+        private boolean enable = true;
+        private List<String> exceptPlayers = new ArrayList<>();
     }
 }

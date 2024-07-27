@@ -29,10 +29,10 @@ public class ReadTest {
     public void toml4jRead() {
         File file = new File("run", "config.toml");
 
-        TestConfig instance = SimpleConfigApi.getInstance().read(TestConfig.class, file, DefaultParsers.toml4j());
+        TestConfig instance = SimpleConfigApi.getInstance().read(TestConfig.class, file, DefaultParsers.toml4j(false));
         System.out.println(instance);
 
-        ConfigObject object = SimpleConfigApi.getInstance().read(file, DefaultParsers.toml4j());
+        ConfigObject object = SimpleConfigApi.getInstance().read(file, DefaultParsers.toml4j(false));
         System.out.println((Map<String, ?>) object.get("properties"));
 
         object.set("time", 17);

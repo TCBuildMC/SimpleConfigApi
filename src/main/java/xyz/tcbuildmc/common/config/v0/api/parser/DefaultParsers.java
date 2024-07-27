@@ -69,12 +69,17 @@ public interface DefaultParsers {
     /**
      * Get Toml4j config parser to parse.
      *
+     * @param commented if you want to parse comments
      * @return a {@link Parser} using Toml4j
-     * @since 1.1.0
+     * @since 1.2.2
      */
-    @Contract(" -> new")
+    @Contract("_ -> new")
     @NotNull
-    static Parser toml4j() {
+    static Parser toml4j(boolean commented) {
+        if (commented) {
+            return new CommentToml4jParser();
+        }
+
         return new Toml4jParser();
     }
 
@@ -83,12 +88,17 @@ public interface DefaultParsers {
      *
      * @param toml a {@link Toml} instance
      * @param tomlWriter a {@link TomlWriter} instance
+     * @param commented if you want to parse comments
      * @return a {@link Parser} using Toml4j
-     * @since 1.1.0
+     * @since 1.2.2
      */
-    @Contract(value = "_, _ -> new", pure = true)
+    @Contract(value = "_, _, _ -> new", pure = true)
     @NotNull
-    static Parser toml4j(Toml toml, TomlWriter tomlWriter) {
+    static Parser toml4j(Toml toml, TomlWriter tomlWriter, boolean commented) {
+        if (commented) {
+            return new CommentToml4jParser(toml, tomlWriter);
+        }
+
         return new Toml4jParser(toml, tomlWriter);
     }
 

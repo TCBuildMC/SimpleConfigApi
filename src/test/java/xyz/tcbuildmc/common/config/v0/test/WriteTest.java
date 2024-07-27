@@ -52,7 +52,7 @@ public class WriteTest {
                 Arrays.asList("creeper", "steve", "minecraft", "jvav"),
                 properties);
 
-        System.out.println(SimpleConfigApi.getInstance().write(TestConfig.class, content, DefaultParsers.toml4j()));
+        System.out.println(SimpleConfigApi.getInstance().write(TestConfig.class, content, DefaultParsers.toml4j(true)));
     }
 
     @Test

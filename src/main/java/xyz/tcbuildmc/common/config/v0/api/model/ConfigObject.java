@@ -277,6 +277,28 @@ public class ConfigObject extends LinkedHashMap<String, Object> implements Map<S
      * @deprecated
      */
     @Deprecated
+    @Override
+    public Object put(String key, Object value) {
+        return super.put(key, value);
+    }
+
+    /**
+     * Use {@link ConfigObject#set(String, Object)} instead.
+     *
+     * @deprecated
+     */
+    @Deprecated
+    @Override
+    public Object putIfAbsent(String key, Object value) {
+        return super.putIfAbsent(key, value);
+    }
+
+    /**
+     * Use {@link ConfigObject#set(String, Object)} instead.
+     *
+     * @deprecated
+     */
+    @Deprecated
     public void add(String key, String value) {
         this.put(key, value);
     }
@@ -287,8 +309,8 @@ public class ConfigObject extends LinkedHashMap<String, Object> implements Map<S
      * @deprecated
      */
     @Deprecated
-    public void delete(String key) {
-        this.remove(key);
+    public void remove(String key) {
+        super.remove(key);
     }
 
     /**

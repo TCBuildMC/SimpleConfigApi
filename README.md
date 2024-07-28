@@ -20,7 +20,7 @@ dependencies {
 Remember to replace `{VERSION}` with full version.
 
 ## How to use
-The latest version (1.2.x) javadocs can be found [here](https://jitpack.io/com/github/TCBuildMC/SimpleConfigApi/latest/javadoc/).
+The latest version (1.3.x) javadocs can be found [here](https://jitpack.io/com/github/TCBuildMC/SimpleConfigApi/latest/javadoc/).
 
 ### Example
 ```java

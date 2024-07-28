@@ -2,11 +2,16 @@ package xyz.tcbuildmc.common.config.v0.api;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import xyz.tcbuildmc.common.config.v0.api.manager.ConfigManager;
 import xyz.tcbuildmc.common.config.v0.api.parser.DefaultParsers;
 import xyz.tcbuildmc.common.config.v0.api.parser.Parser;
 import xyz.tcbuildmc.common.config.v0.impl.SimpleConfigApiImpl;
 import xyz.tcbuildmc.common.config.v0.api.model.ConfigObject;
+import xyz.tcbuildmc.common.config.v0.impl.manager.FileConfigManager;
+import xyz.tcbuildmc.common.config.v0.impl.manager.URLConfigManager;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -317,5 +322,79 @@ public interface SimpleConfigApi {
     default <T> ConfigObject toConfigObject(Class<T> clazz, T content, Parser parser) {
         String config = write(clazz, content, parser);
         return read(config, parser);
+    }
+
+    /**
+     * Get an implementation of {@link ConfigManager}.
+     * <p>
+     * Use {@link File} to load/ save.
+     *
+     * @param clazz the class type of your config class
+     * @param parser the config parser. Also see {@link Parser} and {@link DefaultParsers}
+     * @param file the config {@link File}
+     * @param <T> the type of your config class
+     * @return an implementation of {@link ConfigManager}
+     * @since 1.3.0
+     */
+    @Contract("_, _, _ -> new")
+    @NotNull
+    static <T> FileConfigManager<T> ofFile(Class<T> clazz, Parser parser, File file) {
+        return new FileConfigManager<>(clazz, parser, file);
+    }
+
+    /**
+     * A simple overload method of {@link SimpleConfigApi#ofFile(Class, Parser, File)} (By {@link Path#toFile()}).
+     *
+     * @param clazz the class type of your config class
+     * @param parser the config parser. Also see {@link Parser} and {@link DefaultParsers}
+     * @param path the {@link Path} of the config {@link File}
+     * @param <T> the type of your config class
+     * @return an implementation of {@link ConfigManager}
+     * @since 1.3.0
+     */
+    @Contract("_, _, _ -> new")
+    @NotNull
+    static <T> FileConfigManager<T> ofPath(Class<T> clazz, Parser parser, @NotNull Path path) {
+        return ofFile(clazz, parser, path.toFile());
+    }
+
+    /**
+     * Get an implementation of {@link ConfigManager}.
+     * <p>
+     * Use {@link URL} to load. (It doesn't support save!)
+     *
+     * @param clazz the class type of your config class
+     * @param parser the config parser. Also see {@link Parser} and {@link DefaultParsers}
+     * @param url a {@link URL} of the config file.
+     * @param <T> the type of your config class
+     * @return an implementation of {@link ConfigManager}
+     * @since 1.3.0
+     */
+    @Contract("_, _, _ -> new")
+    @ApiStatus.Experimental
+    @NotNull
+    static <T> URLConfigManager<T> ofURL(Class<T> clazz, Parser parser, URL url) {
+        return new URLConfigManager<>(clazz, parser, url);
+    }
+
+    /**
+     * A simple overload method of {@link SimpleConfigApi#ofURL(Class, Parser, URL)}.
+     *
+     * @param clazz the class type of your config class
+     * @param parser the config parser. Also see {@link Parser} and {@link DefaultParsers}
+     * @param uri a {@link URI} of the config file.
+     * @param <T> the type of your config class
+     * @return an implementation of {@link ConfigManager}
+     * @since 1.3.0
+     */
+    @Contract("_, _, _ -> new")
+    @ApiStatus.Experimental
+    @NotNull
+    static <T> URLConfigManager<T> ofURI(Class<T> clazz, Parser parser, @NotNull URI uri) {
+        try {
+            return ofURL(clazz, parser, uri.toURL());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Failed to parse URI.", e);
+        }
     }
 }

@@ -24,15 +24,16 @@ public class MapTest {
         System.out.println(map);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void pathWalkerTest() {
         ConfigObject object = new ConfigObject();
 
         Map<String, Object> properties = new LinkedHashMap<>();
-        Map<String, Object> ban = new LinkedHashMap<>();
+        ConfigObject ban = new ConfigObject();
 
-        ban.put("tel", 114514);
-        ban.put("qq", 1919810);
+        ban.set("tel", 114514);
+        ban.set("qq", 1919810);
         properties.put("awa", Arrays.asList("MC", "Java", "Windows", "Server", ban));
         object.set("properties", properties);
 

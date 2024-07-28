@@ -338,7 +338,7 @@ public interface SimpleConfigApi {
      */
     @Contract("_, _, _ -> new")
     @NotNull
-    static <T> FileConfigManager<T> ofFile(Class<T> clazz, Parser parser, File file) {
+    default <T> FileConfigManager<T> ofFile(Class<T> clazz, Parser parser, File file) {
         return new FileConfigManager<>(clazz, parser, file);
     }
 
@@ -354,7 +354,7 @@ public interface SimpleConfigApi {
      */
     @Contract("_, _, _ -> new")
     @NotNull
-    static <T> FileConfigManager<T> ofPath(Class<T> clazz, Parser parser, @NotNull Path path) {
+    default <T> FileConfigManager<T> ofPath(Class<T> clazz, Parser parser, @NotNull Path path) {
         return ofFile(clazz, parser, path.toFile());
     }
 
@@ -373,7 +373,7 @@ public interface SimpleConfigApi {
     @Contract("_, _, _ -> new")
     @ApiStatus.Experimental
     @NotNull
-    static <T> URLConfigManager<T> ofURL(Class<T> clazz, Parser parser, URL url) {
+    default <T> URLConfigManager<T> ofURL(Class<T> clazz, Parser parser, URL url) {
         return new URLConfigManager<>(clazz, parser, url);
     }
 
@@ -390,7 +390,7 @@ public interface SimpleConfigApi {
     @Contract("_, _, _ -> new")
     @ApiStatus.Experimental
     @NotNull
-    static <T> URLConfigManager<T> ofURI(Class<T> clazz, Parser parser, @NotNull URI uri) {
+    default <T> URLConfigManager<T> ofURI(Class<T> clazz, Parser parser, @NotNull URI uri) {
         try {
             return ofURL(clazz, parser, uri.toURL());
         } catch (MalformedURLException e) {

@@ -1,6 +1,7 @@
 package xyz.tcbuildmc.common.config.v0.api.parser;
 
 import blue.endless.jankson.Jankson;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.google.gson.Gson;
 import com.moandjiezana.toml.Toml;
 import com.moandjiezana.toml.TomlWriter;
@@ -127,7 +128,40 @@ public interface DefaultParsers {
         return new SnakeYamlParser(yaml);
     }
 
-    static FastjsonParser fastjson() {
+    /**
+     * Get Fastjson2 config parser to parse.
+     *
+     * @return a {@link Parser} using Fastjson2
+     * @since 1.1.2
+     */
+    @Contract(value = " -> new", pure = true)
+    @NotNull
+    static Parser fastjson() {
         return new FastjsonParser();
+    }
+
+    /**
+     * Get {@code jackson-databind} config parser to parse.
+     *
+     * @return a {@link Parser} using {@code jackson-databind}
+     * @since 1.2.4
+     */
+    @Contract(" -> new")
+    @NotNull
+    static Parser jacksonJson() {
+        return new JacksonJsonParser();
+    }
+
+    /**
+     * Get {@code jackson-databind} config parser to parse.
+     *
+     * @param mapper a {@link JsonMapper} instance
+     * @return a {@link Parser} using {@code jackson-databind}
+     * @since 1.2.4
+     */
+    @Contract(value = "_ -> new", pure = true)
+    @NotNull
+    static Parser jacksonJson(JsonMapper mapper) {
+        return new JacksonJsonParser(mapper);
     }
 }

@@ -2,6 +2,9 @@ package xyz.tcbuildmc.common.config.v0.api.parser;
 
 import blue.endless.jankson.Jankson;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.dataformat.javaprop.JavaPropsMapper;
+import com.fasterxml.jackson.dataformat.toml.TomlMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.google.gson.Gson;
 import com.moandjiezana.toml.Toml;
 import com.moandjiezana.toml.TomlWriter;
@@ -13,7 +16,7 @@ import xyz.tcbuildmc.common.config.v0.impl.parser.*;
 /**
  * The default config parsers of {@code simple-config-v0}.
  * <p>
- * For now, the library just supports Gson, Jankson, Toml4j.
+ * For now, the library just supports Gson, Jankson, Toml4j, SnakeYAML, Fastjson2, Jackson
  *
  * @since 1.0.0
  */
@@ -163,5 +166,80 @@ public interface DefaultParsers {
     @NotNull
     static Parser jacksonJson(JsonMapper mapper) {
         return new JacksonJsonParser(mapper);
+    }
+
+    /**
+     * Get {@code jackson-dataformat-yaml} config parser to parse.
+     *
+     * @return a {@link Parser} using {@code jackson-dataformat-yaml}
+     * @since 1.2.5
+     */
+    @Contract(" -> new")
+    @NotNull
+    static Parser jacksonYaml() {
+        return new JacksonYamlParser();
+    }
+
+    /**
+     * Get {@code jackson-dataformat-yaml} config parser to parse.
+     *
+     * @param mapper a {@link YAMLMapper} instance
+     * @return a {@link Parser} using {@code jackson-dataformat-yaml}
+     * @since 1.2.5
+     */
+    @Contract(value = "_ -> new", pure = true)
+    @NotNull
+    static Parser jacksonYaml(YAMLMapper mapper) {
+        return new JacksonYamlParser(mapper);
+    }
+
+    /**
+     * Get {@code jackson-dataformat-toml} config parser to parse.
+     *
+     * @return a {@link Parser} using {@code jackson-dataformat-toml}
+     * @since 1.2.5
+     */
+    @Contract(" -> new")
+    @NotNull
+    static Parser jacksonToml() {
+        return new JacksonTomlParser();
+    }
+
+    /**
+     * Get {@code jackson-dataformat-toml} config parser to parse.
+     *
+     * @param mapper a {@link TomlMapper} instance
+     * @return a {@link Parser} using {@code jackson-dataformat-toml}
+     * @since 1.2.5
+     */
+    @Contract(value = "_ -> new", pure = true)
+    @NotNull
+    static Parser jacksonJson(TomlMapper mapper) {
+        return new JacksonTomlParser(mapper);
+    }
+
+    /**
+     * Get {@code jackson-dataformat-properties} config parser to parse.
+     *
+     * @return a {@link Parser} using {@code jackson-dataformat-properties}
+     * @since 1.2.5
+     */
+    @Contract(" -> new")
+    @NotNull
+    static Parser jacksonProperties() {
+        return new JacksonPropertiesParser();
+    }
+
+    /**
+     * Get {@code jackson-dataformat-properties} config parser to parse.
+     *
+     * @param mapper a {@link JavaPropsMapper} instance
+     * @return a {@link Parser} using {@code jackson-dataformat-properties}
+     * @since 1.2.5
+     */
+    @Contract(value = "_ -> new", pure = true)
+    @NotNull
+    static Parser jacksonProperties(JavaPropsMapper mapper) {
+        return new JacksonPropertiesParser(mapper);
     }
 }

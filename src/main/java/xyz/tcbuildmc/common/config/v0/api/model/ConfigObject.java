@@ -38,6 +38,10 @@ public class ConfigObject extends LinkedHashMap<String, Object> implements Map<S
      */
     @Nullable
     public <T> T get(String key) {
+        if (key == null) {
+            throw new NullPointerException();
+        }
+
         return (T) super.get(key);
     }
 
@@ -261,6 +265,10 @@ public class ConfigObject extends LinkedHashMap<String, Object> implements Map<S
      * @param value a value of the key
      */
     public void set(String key, @Nullable Object value) {
+        if (key == null) {
+            throw new NullPointerException();
+        }
+
         if (value == null) {
             super.remove(key);
             return;

@@ -54,8 +54,16 @@ public interface SimpleConfigApi {
     /**
      * @see SimpleConfigApi#read(Class, String, Parser)
      */
-    default <T> T read(Class<T> clazz, File file, Parser parser) {
+    default <T> T read(Class<T> clazz, @NotNull File file, Parser parser) {
         try {
+            if (!file.exists()) {
+                if (!file.getParentFile().exists()) {
+                    file.getParentFile().mkdirs();
+                }
+
+                file.createNewFile();
+            }
+
             String content = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
 
             return read(clazz, content, parser);
